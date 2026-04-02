@@ -6,49 +6,31 @@
 <title>GymBeam</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:#fff;color:#1a1a1a;font-size:14px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:#f5f5f5;color:#1a1a1a;font-size:14px}
 a{text-decoration:none;color:inherit;cursor:pointer}
+.page{display:none}.page.active{display:block}
+
+/* SCENARIO SWITCHER */
+#scenario-bar{position:fixed;bottom:0;left:0;right:0;z-index:500;background:#1a1a1a;border-top:2px solid #ff6b00;padding:10px 16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#scenario-bar span{font-size:11px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.sc-btn{border:1.5px solid #444;background:none;color:#ccc;border-radius:4px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}
+.sc-btn:hover{border-color:#ff6b00;color:#ff6b00}
+.sc-btn.active{background:#ff6b00;border-color:#ff6b00;color:#fff}
 
 /* PROMO BAR */
 #promo-bar{background:#ff6b00;color:#fff;text-align:center;padding:7px 40px;font-size:12px;font-weight:500;position:relative}
 #promo-bar b{font-weight:700}
-#promo-close{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:#fff;font-size:18px;cursor:pointer;opacity:.8}
-#promo-close:hover{opacity:1}
+#promo-close{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:#fff;font-size:18px;cursor:pointer}
 
 /* NAV */
 #nav{background:#fff;border-bottom:1px solid #e8e8e8;padding:0 24px;display:flex;align-items:center;height:64px;gap:16px;position:sticky;top:0;z-index:300}
-.nav-logo{font-size:22px;font-weight:800;color:#1a1a1a;letter-spacing:-1px;font-style:italic;white-space:nowrap}
+.nav-logo{font-size:22px;font-weight:800;color:#1a1a1a;letter-spacing:-1px;font-style:italic;white-space:nowrap;cursor:pointer}
 .nav-logo span{color:#ff6b00}
 .search-wrap{flex:1;max-width:500px;margin:0 16px;position:relative}
-.search-wrap input{width:100%;border:1.5px solid #d4d4d4;border-radius:4px;padding:9px 44px 9px 14px;font-size:13px;outline:none;color:#1a1a1a;background:#fff}
+.search-wrap input{width:100%;border:1.5px solid #d4d4d4;border-radius:4px;padding:9px 44px 9px 14px;font-size:13px;outline:none}
 .search-wrap input:focus{border-color:#999}
 .search-btn{position:absolute;right:0;top:0;bottom:0;width:42px;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .search-btn svg{width:16px;height:16px;stroke:#666;fill:none;stroke-width:2}
-
-/* SEARCH DROPDOWN */
-#sd{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #e0e0e0;border-radius:4px;box-shadow:0 8px 24px rgba(0,0,0,.13);z-index:999;display:none;max-height:480px;overflow-y:auto}
-#sd.open{display:block}
-.sd-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#888;padding:10px 14px 4px}
-.sd-row{display:flex;align-items:center;gap:12px;padding:9px 14px;cursor:pointer;border-bottom:1px solid #f5f5f5;transition:background .1s}
-.sd-row:last-child{border-bottom:none}
-.sd-row:hover{background:#f8f8f8}
-.sd-row:hover .sd-name{color:#ff6b00}
-.sd-thumb{width:48px;height:48px;background:#f5f5f5;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
-.sd-info{flex:1;min-width:0}
-.sd-name{font-size:13px;color:#1a1a1a;line-height:1.35;margin-bottom:3px}
-.sd-name b{color:#ff6b00;font-weight:700}
-.sd-meta{display:flex;align-items:center;gap:6px}
-.sd-stars{color:#ff6b00;font-size:11px;letter-spacing:.5px}
-.sd-rc{font-size:11px;color:#999}
-.sd-prices{display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0;margin-left:8px}
-.sd-oldp{font-size:11px;color:#999;text-decoration:line-through}
-.sd-price{font-size:13px;font-weight:700;color:#1a1a1a;white-space:nowrap}
-.sd-price.sale{color:#e53935}
-.sd-cat-row{padding:7px 14px;font-size:13px;color:#333;cursor:pointer;display:flex;align-items:center;gap:8px}
-.sd-cat-row:hover{background:#f8f8f8;color:#ff6b00}
-.sd-cat-row svg{width:12px;height:12px;fill:none;stroke:#bbb;stroke-width:2;flex-shrink:0}
-.sd-empty{padding:16px 14px;font-size:13px;color:#999;text-align:center}
-
 .nav-icons{display:flex;align-items:center;gap:2px;margin-left:auto}
 .nav-icon-btn{display:flex;flex-direction:column;align-items:center;padding:6px 10px;cursor:pointer;border-radius:4px;border:none;background:none}
 .nav-icon-btn:hover{background:#f5f5f5}
@@ -56,22 +38,42 @@ a{text-decoration:none;color:inherit;cursor:pointer}
 .cart-btn{position:relative}
 .cart-count{position:absolute;top:2px;right:6px;background:#ff6b00;color:#fff;border-radius:50%;width:17px;height:17px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:transform .15s}
 .cart-total{font-size:13px;font-weight:600;white-space:nowrap;align-self:center;margin-left:2px}
+.mob-search-btn{display:none;background:none;border:none;cursor:pointer;padding:6px}
+.mob-search-btn svg{width:22px;height:22px;stroke:#1a1a1a;fill:none;stroke-width:2}
+
+/* SEARCH DROPDOWN */
+#sd{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #e0e0e0;border-radius:4px;box-shadow:0 8px 24px rgba(0,0,0,.13);z-index:999;display:none;max-height:480px;overflow-y:auto}
+#sd.open{display:block}
+.sd-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#888;padding:10px 14px 4px}
+.sd-row{display:flex;align-items:center;gap:12px;padding:9px 14px;cursor:pointer;border-bottom:1px solid #f5f5f5}
+.sd-row:hover{background:#f8f8f8}
+.sd-thumb{width:48px;height:48px;background:#f5f5f5;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.sd-info{flex:1;min-width:0}
+.sd-name{font-size:13px;color:#1a1a1a;line-height:1.35;margin-bottom:3px}
+.sd-name b{color:#ff6b00}
+.sd-stars{color:#ff6b00;font-size:11px}
+.sd-rc{font-size:11px;color:#999}
+.sd-prices{display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0;margin-left:8px}
+.sd-oldp{font-size:11px;color:#999;text-decoration:line-through}
+.sd-price{font-size:13px;font-weight:700}
+.sd-price.sale{color:#e53935}
+.sd-empty{padding:16px 14px;font-size:13px;color:#999;text-align:center}
 
 /* MAIN NAV */
-#mainnav{border-bottom:1px solid #e8e8e8;padding:0 24px;display:flex}
-.mnav-item{padding:11px 16px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;cursor:pointer;border-bottom:2px solid transparent;transition:border-color .15s,color .15s}
+#mainnav{background:#fff;border-bottom:1px solid #e8e8e8;padding:0 24px;display:flex;overflow-x:auto}
+#mainnav::-webkit-scrollbar{height:2px}
+.mnav-item{padding:11px 16px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
 .mnav-item:hover{color:#ff6b00;border-bottom-color:#ff6b00}
 
 /* HERO */
 #hero{position:relative;overflow:hidden;background:#1a1a1a;height:420px}
 .slide{position:absolute;inset:0;opacity:0;transition:opacity .5s;display:flex;align-items:center}
 .slide.active{opacity:1}
-.slide-bg{position:absolute;inset:0;background-size:cover;background-position:center}
+.slide-bg{position:absolute;inset:0}
 .slide-content{position:relative;z-index:2;padding:0 80px;max-width:620px}
 .slide-content h1{font-size:52px;font-weight:900;line-height:1.05;color:#fff;text-transform:uppercase;margin-bottom:10px;letter-spacing:-1px}
 .slide-content p{font-size:16px;color:rgba(255,255,255,.8);margin-bottom:22px}
-.cta{display:inline-block;background:#ff6b00;color:#fff;padding:11px 28px;border-radius:4px;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;cursor:pointer}
-.cta:hover{background:#e55f00}
+.cta{display:inline-block;background:#ff6b00;color:#fff;padding:11px 28px;border-radius:4px;font-size:14px;font-weight:700;text-transform:uppercase;cursor:pointer}
 .hero-dots{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:10}
 .hero-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;border:none;padding:0;transition:all .2s}
 .hero-dot.active{background:#ff6b00;width:22px;border-radius:4px}
@@ -81,96 +83,256 @@ a{text-decoration:none;color:inherit;cursor:pointer}
 #hero-next{right:16px}
 
 /* TRUST BAR */
-#trustbar{display:flex;justify-content:center;border-bottom:1px solid #e8e8e8}
-.trust-item{display:flex;align-items:center;gap:10px;padding:14px 32px;border-right:1px solid #e8e8e8;flex:1;max-width:280px}
+#trustbar{background:#fff;display:flex;justify-content:center;border-bottom:1px solid #e8e8e8;overflow-x:auto}
+.trust-item{display:flex;align-items:center;gap:10px;padding:14px 24px;border-right:1px solid #e8e8e8;flex:1;max-width:260px;min-width:160px}
 .trust-item:last-child{border-right:none}
-.trust-icon svg{width:26px;height:26px;fill:none;stroke:#1a1a1a;stroke-width:1.4;flex-shrink:0}
+.trust-icon svg{width:24px;height:24px;fill:none;stroke:#1a1a1a;stroke-width:1.4;flex-shrink:0}
 .trust-text strong{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
 .trust-text span{font-size:11px;color:#777;text-transform:uppercase;letter-spacing:.3px}
 
 /* SECTIONS */
-.section{padding:28px 24px}
-.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.section-title{font-size:15px;font-weight:700}
+.section{padding:20px 16px;background:#f5f5f5}
+.section-inner{background:#fff;border-radius:6px;padding:16px}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.section-title{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.section-link{font-size:12px;color:#ff6b00;font-weight:600}
 
 /* GOALS */
-.goals-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:2px}
+.goals-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
 .goals-row::-webkit-scrollbar{height:3px}
 .goals-row::-webkit-scrollbar-thumb{background:#ddd}
-.goal-card{flex-shrink:0;width:200px;border-radius:4px;overflow:hidden;border:1px solid #e8e8e8;cursor:pointer}
-.goal-img{width:200px;height:200px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:56px}
-.goal-label{padding:8px 10px 9px;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:space-between;background:#fff}
+.goal-card{flex:0 0 160px;border-radius:6px;overflow:hidden;border:1px solid #e8e8e8;cursor:pointer;background:#fff}
+.goal-img{width:160px;height:140px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:46px}
+.goal-label{padding:8px 10px;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:space-between}
 .goal-label svg{width:12px;height:12px;fill:none;stroke:#999;stroke-width:2;flex-shrink:0}
-.goals-nav{display:flex;gap:4px}
-.gnav-btn{width:28px;height:28px;border:1px solid #ddd;background:#fff;border-radius:4px;cursor:pointer;font-size:14px;color:#555}
-.gnav-btn:hover{background:#f5f5f5}
 
-/* PRODUCT CARDS */
+/* PRODUCT GRID – desktop */
 .products-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
-@media(max-width:1200px){.products-grid{grid-template-columns:repeat(4,1fr)}}
-@media(max-width:700px){.products-grid{grid-template-columns:repeat(2,1fr)}}
 
-.pcard{border:1px solid #e8e8e8;border-radius:4px;overflow:hidden;cursor:pointer;background:#fff;position:relative}
+/* PRODUCT SCROLL ROW – mobile */
+.products-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory}
+.products-scroll::-webkit-scrollbar{height:3px}
+.products-scroll::-webkit-scrollbar-thumb{background:#ddd;border-radius:2px}
+.products-scroll .pcard{flex:0 0 160px;scroll-snap-align:start}
+
+/* PRODUCT CARD */
+.pcard{border:1px solid #e8e8e8;border-radius:6px;overflow:hidden;cursor:pointer;background:#fff;position:relative}
 .pcard:hover .pcard-name{color:#ff6b00}
-.pcard-img-wrap{position:relative;background:#f5f5f5;padding:16px;display:flex;align-items:center;justify-content:center;height:180px}
-.pimg{font-size:52px;line-height:1}
-.pcard-badge{position:absolute;top:8px;left:8px;background:#e53935;color:#fff;font-size:10px;font-weight:700;padding:3px 7px;border-radius:3px;letter-spacing:.3px}
+.pcard-img-wrap{position:relative;background:#f8f8f8;padding:12px;display:flex;align-items:center;justify-content:center;height:150px}
+.pimg{font-size:46px;line-height:1}
+.pcard-badge{position:absolute;top:6px;left:6px;background:#e53935;color:#fff;font-size:10px;font-weight:700;padding:3px 6px;border-radius:3px}
 .pcard-cart{position:absolute;bottom:8px;left:8px;width:30px;height:30px;background:#1a1a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s}
 .pcard-cart:hover{background:#ff6b00}
 .pcard-cart svg{width:14px;height:14px;fill:none;stroke:#fff;stroke-width:1.8}
+.pcard-wish-sm{position:absolute;top:6px;right:6px;width:26px;height:26px;background:#fff;border-radius:50%;border:1px solid #e8e8e8;display:flex;align-items:center;justify-content:center}
+.pcard-wish-sm svg{width:13px;height:13px;fill:none;stroke:#999;stroke-width:1.8}
 .pcard-flag{position:absolute;bottom:8px;right:8px;font-size:10px;background:#fff;border:1px solid #eee;border-radius:3px;padding:2px 5px;font-weight:600;color:#555}
-.pcard-vegan{position:absolute;bottom:8px;right:8px;background:#4caf50;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:.5px}
-.pcard-body{padding:10px 10px 12px}
-.pcard-name{font-size:12px;color:#1a1a1a;line-height:1.4;margin-bottom:6px;min-height:34px;font-weight:400}
-.pcard-stars{display:flex;align-items:center;gap:3px;margin-bottom:6px}
+.pcard-vegan{position:absolute;bottom:8px;right:8px;background:#4caf50;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px}
+.pcard-body{padding:9px 9px 11px}
+.pcard-name{font-size:12px;color:#1a1a1a;line-height:1.35;margin-bottom:5px;min-height:32px}
+.pcard-stars{display:flex;align-items:center;gap:2px;margin-bottom:4px}
 .star{color:#ff6b00;font-size:12px}
 .star-e{color:#ddd;font-size:12px}
 .rcount{font-size:11px;color:#999}
-.pcard-price{font-size:15px;font-weight:700;color:#1a1a1a}
+.pcard-price{font-size:14px;font-weight:700}
 .pcard-price.sale{color:#e53935}
-.pcard-oldp{font-size:11px;color:#999;text-decoration:line-through;margin-right:4px}
+.pcard-oldp{font-size:11px;color:#999;text-decoration:line-through;margin-right:3px}
 
-/* RECENTLY VIEWED */
-#rv-section{margin:0 24px 28px;border:1px solid #e8e8e8;border-radius:6px;overflow:visible;background:#fff}
-#rv-header{background:#f8f8f8;border-bottom:1px solid #e8e8e8;padding:12px 18px;display:flex;align-items:center;gap:8px}
-.rv-icon{width:28px;height:28px;background:#1a1a1a;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.rv-icon svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2}
-.rv-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+/* ===== RECENTLY VIEWED WIDGET ===== */
+.rv-widget{border-radius:8px;overflow:hidden;border:1px solid #e8e8e8;background:#fff;margin:0 16px 20px}
+.rv-widget-header{background:#f8f8f8;border-bottom:1px solid #e8e8e8;padding:11px 16px;display:flex;align-items:center;gap:8px}
+.rv-icon{width:26px;height:26px;background:#1a1a1a;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rv-icon svg{width:13px;height:13px;stroke:#fff;fill:none;stroke-width:2}
+.rv-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
 .rv-sub{font-size:11px;color:#999;margin-left:2px}
-.rv-badge{background:#ff6b00;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:4px}
-#rv-body{padding:14px 18px}
-#rv-slider-wrap{position:relative}
-/* Desktop: same grid as products */
-#rv-list{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
-@media(max-width:1200px){
-  #rv-list{display:flex;overflow:hidden;gap:12px;scroll-behavior:smooth}
-  #rv-list .pcard{flex:0 0 calc(25% - 9px);min-width:0}
-  .rv-arr{display:flex !important}
-}
-@media(max-width:700px){
-  #rv-list .pcard{flex:0 0 calc(50% - 6px)}
-}
-.rv-arr{display:none;position:absolute;top:50%;transform:translateY(-50%);z-index:5;background:#fff;border:1px solid #ddd;border-radius:50%;width:36px;height:36px;font-size:20px;cursor:pointer;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.12);color:#333}
-.rv-arr:hover{background:#f5f5f5}
-#rv-prev{left:-18px}
-#rv-next{right:-18px}
-.rv-tip{font-size:11px;color:#ff6b00;font-weight:600;display:flex;align-items:center;gap:5px;margin-top:12px}
+.rv-badge{background:#ff6b00;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:auto}
+.rv-body{padding:12px 16px}
+/* desktop: grid */
+.rv-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+/* mobile: scroll row */
+.rv-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory}
+.rv-scroll::-webkit-scrollbar{height:3px}
+.rv-scroll::-webkit-scrollbar-thumb{background:#ddd;border-radius:2px}
+.rv-scroll .pcard{flex:0 0 160px;scroll-snap-align:start}
+/* few items: just flex no scroll */
+.rv-few{display:flex;gap:10px;flex-wrap:nowrap}
+.rv-few .pcard{flex:0 0 160px}
+.rv-tip{font-size:11px;color:#ff6b00;font-weight:600;display:flex;align-items:center;gap:5px;margin-top:10px}
 .rv-tip svg{width:12px;height:12px;fill:#ff6b00;flex-shrink:0}
 
+/* PDP */
+#page-pdp{background:#f5f5f5}
+.pdp-wrap{max-width:1200px;margin:0 auto;padding:20px 16px}
+.pdp-breadcrumb{font-size:12px;color:#999;margin-bottom:14px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.pdp-breadcrumb span{cursor:pointer}
+.pdp-breadcrumb span:hover{color:#ff6b00}
+.pdp-breadcrumb .sep{color:#ddd}
+.pdp-main{display:grid;grid-template-columns:1fr 1fr;gap:28px;background:#fff;border-radius:8px;padding:24px;margin-bottom:16px}
+.pdp-gallery{display:flex;flex-direction:column;gap:10px}
+.pdp-main-img{background:#f5f5f5;border-radius:8px;height:380px;display:flex;align-items:center;justify-content:center;font-size:130px;border:1px solid #e8e8e8}
+.pdp-thumbs{display:flex;gap:8px}
+.pdp-thumb{width:68px;height:68px;background:#f5f5f5;border-radius:6px;border:2px solid transparent;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer}
+.pdp-thumb.active{border-color:#ff6b00}
+.pdp-brand{font-size:12px;font-weight:700;color:#ff6b00;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.pdp-name{font-size:22px;font-weight:800;line-height:1.2;margin-bottom:10px}
+.pdp-rating-row{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.pdp-stars{color:#ff6b00;font-size:15px}
+.pdp-rcount{font-size:13px;color:#ff6b00;font-weight:600;cursor:pointer}
+.pdp-badge-sk{background:#edf4ff;color:#1565c0;font-size:11px;font-weight:700;padding:3px 8px;border-radius:3px}
+.pdp-weight-row{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.pdp-weight-btn{border:1.5px solid #ddd;border-radius:4px;padding:7px 16px;font-size:13px;font-weight:600;cursor:pointer;background:#fff}
+.pdp-weight-btn.active{border-color:#ff6b00;color:#ff6b00;background:#fff8f3}
+.pdp-flavour-label{font-size:13px;font-weight:600;margin-bottom:7px;color:#555}
+.pdp-flavour-sel{width:100%;border:1.5px solid #ddd;border-radius:4px;padding:9px 14px;font-size:13px;outline:none;margin-bottom:18px;background:#fff}
+.pdp-flavour-sel:focus{border-color:#ff6b00}
+.pdp-price-row{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
+.pdp-price{font-size:30px;font-weight:800}
+.pdp-price-per{font-size:13px;color:#999;margin-bottom:18px}
+.pdp-qty-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.qty-ctrl{display:flex;align-items:center;border:1.5px solid #ddd;border-radius:4px;overflow:hidden}
+.qty-btn{width:36px;height:40px;background:#f5f5f5;border:none;font-size:18px;cursor:pointer;font-weight:600}
+.qty-btn:hover{background:#e8e8e8}
+.qty-val{width:44px;text-align:center;font-size:14px;font-weight:600;border:none;outline:none;background:#fff}
+.pdp-atc{flex:1;background:#ff6b00;color:#fff;border:none;border-radius:4px;height:44px;font-size:14px;font-weight:700;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.pdp-atc:hover{background:#e55f00}
+.pdp-atc svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2}
+.pdp-wish{width:44px;height:44px;border:1.5px solid #ddd;border-radius:4px;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.pdp-wish svg{width:18px;height:18px;fill:none;stroke:#1a1a1a;stroke-width:1.8}
+.pdp-badges{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:0}
+.pdp-badge{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:#555}
+.pdp-badge svg{width:15px;height:15px;fill:none;stroke:#ff6b00;stroke-width:2}
+.pdp-badge-delivery{color:#2e7d32}.pdp-badge-delivery svg{stroke:#2e7d32}
+.pdp-badge-free{color:#1565c0}.pdp-badge-free svg{stroke:#1565c0}
+
+/* PDP TABS */
+.pdp-tabs{background:#fff;border-radius:8px;margin-bottom:16px;overflow:hidden;border:1px solid #e8e8e8}
+.pdp-tab-nav{display:flex;border-bottom:1px solid #e8e8e8;overflow-x:auto}
+.pdp-tab-nav::-webkit-scrollbar{height:2px}
+.pdp-tab-btn{padding:13px 18px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;white-space:nowrap;color:#666;text-transform:uppercase;letter-spacing:.3px}
+.pdp-tab-btn.active{color:#ff6b00;border-bottom-color:#ff6b00}
+.pdp-tab-content{display:none;padding:20px}
+.pdp-tab-content.active{display:block}
+.comp-text{font-size:13px;line-height:1.7;color:#444;margin-bottom:14px}
+.comp-text b{color:#1a1a1a}
+.dosage-box{background:#f8f8f8;border-radius:6px;padding:14px;border-left:3px solid #ff6b00;font-size:13px;line-height:1.7;color:#444}
+.nut-table-wrap{overflow-x:auto}
+.nut-selector{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.nut-sel-btn{border:1.5px solid #ddd;border-radius:4px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;background:#fff}
+.nut-sel-btn.active{border-color:#ff6b00;color:#ff6b00;background:#fff8f3}
+.nut-table{width:100%;border-collapse:collapse;font-size:13px}
+.nut-table th{text-align:left;padding:7px 9px;background:#f5f5f5;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#666;border:1px solid #e8e8e8}
+.nut-table td{padding:7px 9px;border:1px solid #e8e8e8;color:#333}
+.nut-table tr:nth-child(even) td{background:#fafafa}
+.nut-table td:last-child{font-weight:600}
+.nut-note{font-size:11px;color:#999;margin-top:8px}
+.amino-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid #e8e8e8;border-radius:6px;overflow:hidden}
+.amino-row{display:flex;justify-content:space-between;padding:6px 10px;border-bottom:1px solid #f0f0f0;font-size:12px}
+.amino-row:last-child{border-bottom:none}
+.amino-row:nth-child(even){background:#fafafa}
+.amino-val{font-weight:700}
+.reviews-summary{display:flex;gap:24px;align-items:center;padding:16px;background:#f8f8f8;border-radius:8px;margin-bottom:16px;flex-wrap:wrap}
+.reviews-score{text-align:center}
+.reviews-score .big{font-size:48px;font-weight:900;line-height:1}
+.reviews-score .stars-big{color:#ff6b00;font-size:20px}
+.reviews-score .sub{font-size:12px;color:#999;margin-top:3px}
+.reviews-bars{flex:1;min-width:180px}
+.bar-row{display:flex;align-items:center;gap:7px;margin-bottom:4px;font-size:12px}
+.bar-label{width:36px;text-align:right;color:#666}
+.bar-track{flex:1;height:8px;background:#e8e8e8;border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;background:#ff6b00;border-radius:4px}
+.bar-count{width:28px;color:#999}
+.review-card{border:1px solid #e8e8e8;border-radius:6px;padding:14px;margin-bottom:10px}
+.review-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:7px;gap:8px;flex-wrap:wrap}
+.review-author{font-weight:700;font-size:13px}
+.review-date{font-size:12px;color:#999}
+.review-stars{color:#ff6b00;font-size:13px}
+.review-verified{font-size:11px;color:#2e7d32;font-weight:600;margin-top:1px}
+.review-text{font-size:13px;line-height:1.6;color:#444}
+
+/* SCROLL WRAPPER WITH ARROWS */
+.scroll-outer{position:relative}
+.scroll-arr{position:absolute;top:50%;transform:translateY(-50%);z-index:10;width:34px;height:34px;border-radius:50%;background:#fff;border:1px solid #ddd;box-shadow:0 2px 6px rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#333;line-height:1}
+.scroll-arr:hover{background:#f5f5f5;border-color:#bbb}
+.scroll-arr.arr-l{left:-14px}
+.scroll-arr.arr-r{right:-14px}
+.scroll-arr.hidden{opacity:0;pointer-events:none}
+
+/* REC SECTION */
+.rec-section{background:#fff;border-radius:8px;padding:16px;margin-bottom:16px;border:1px solid #e8e8e8}
+.rec-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px}
+
 /* TOAST */
-#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:4px;font-size:13px;z-index:9999;transition:transform .28s,opacity .28s;opacity:0;pointer-events:none;white-space:nowrap}
+#toast{position:fixed;bottom:72px;left:50%;transform:translateX(-50%) translateY(40px);background:#1a1a1a;color:#fff;padding:9px 18px;border-radius:4px;font-size:13px;z-index:9999;transition:transform .25s,opacity .25s;opacity:0;pointer-events:none;white-space:nowrap}
 #toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 
 /* FOOTER */
-footer{background:#1a1a1a;color:#fff;padding:36px 24px 20px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
-footer h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px}
+footer{background:#1a1a1a;color:#fff;padding:32px 24px 20px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+footer h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;color:#aaa}
 footer ul{list-style:none}
-footer ul li{margin-bottom:7px;font-size:12px;color:#888;cursor:pointer}
+footer ul li{margin-bottom:6px;font-size:12px;color:#666;cursor:pointer}
 footer ul li:hover{color:#fff}
-.footer-btm{background:#111;color:#666;text-align:center;padding:12px;font-size:11px}
+.footer-btm{background:#111;color:#555;text-align:center;padding:10px;font-size:11px}
+
+/* MOBILE */
+@media(max-width:768px){
+  #nav{padding:0 12px;gap:6px;height:54px}
+  .nav-logo{font-size:18px}
+  .search-wrap{display:none}
+  .search-wrap.mob-open{display:block;position:fixed;top:0;left:0;right:0;z-index:400;background:#fff;padding:10px 12px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+  .mob-search-btn{display:flex}
+  .cart-total{display:none}
+  #mainnav{padding:0 8px}
+  .mnav-item{padding:9px 10px;font-size:12px}
+  #hero{height:260px}
+  .slide-content{padding:0 28px}
+  .slide-content h1{font-size:26px}
+  .slide-content p{font-size:12px;margin-bottom:12px}
+  .cta{padding:9px 18px;font-size:12px}
+  #trustbar{justify-content:flex-start}
+  .trust-item{padding:9px 14px;min-width:130px}
+  .trust-text strong{font-size:11px}
+  .trust-text span{font-size:10px}
+  .section{padding:12px}
+  .section-inner{padding:12px}
+  .products-grid{display:none}
+  .products-scroll{display:flex}
+  .rv-grid{display:none!important}
+  footer{grid-template-columns:repeat(2,1fr);padding:20px 14px}
+  /* PDP mobile */
+  .pdp-wrap{padding:10px}
+  .pdp-main{grid-template-columns:1fr;gap:0;padding:14px}
+  .pdp-main-img{height:260px;font-size:90px}
+  .pdp-name{font-size:17px}
+  .pdp-price{font-size:24px}
+  .pdp-tabs .pdp-tab-content{padding:14px}
+  .amino-grid{grid-template-columns:1fr}
+  .rec-section .products-grid{display:none}
+  .rec-section .products-scroll{display:flex}
+}
+/* Desktop RV cards: fixed width, never stretch */
+.desktop-rv-card{flex:0 0 170px!important;min-width:0}
+
+@media(min-width:769px){
+  .products-scroll{display:none}
+  .rec-section .products-scroll{display:none}
+}
+@media(min-width:769px) and (max-width:1200px){
+  .products-grid{grid-template-columns:repeat(4,1fr)}
+  .rv-grid{grid-template-columns:repeat(4,1fr)}
+}
 </style>
 </head>
 <body>
+
+<!-- SCENARIO SWITCHER -->
+<div id="scenario-bar">
+  <span>Last viewed:</span>
+  <button class="sc-btn" onclick="setScenario(0)">0 produktov</button>
+  <button class="sc-btn" onclick="setScenario(1)">1 produkt</button>
+  <button class="sc-btn active" onclick="setScenario(3)">3 produkty</button>
+  <button class="sc-btn" onclick="setScenario(6)">6 produktov</button>
+  <button class="sc-btn" onclick="setScenario(6)">6 produktov (scroll)</button>
+</div>
 
 <!-- PROMO BAR -->
 <div id="promo-bar">
@@ -180,16 +342,15 @@ footer ul li:hover{color:#fff}
 
 <!-- NAV -->
 <div id="nav">
-  <div class="nav-logo">Gym<span>Beam</span>®</div>
-  <div class="search-wrap">
+  <div class="nav-logo" onclick="goPage('home')">Gym<span>Beam</span>®</div>
+  <div class="search-wrap" id="search-wrap">
     <input id="s-input" type="text" placeholder="Hľadajte v obchode..." autocomplete="off"
-      oninput="sdSearch(this.value)"
-      onfocus="sdSearch(this.value)"
-      onblur="setTimeout(sdHide,180)">
+      oninput="sdSearch(this.value)" onfocus="sdSearch(this.value)" onblur="setTimeout(sdHide,180)">
     <button class="search-btn"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
     <div id="sd"></div>
   </div>
   <div class="nav-icons">
+    <button class="mob-search-btn" onclick="toggleMobSearch()"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
     <button class="nav-icon-btn"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></button>
     <button class="nav-icon-btn"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
     <button class="nav-icon-btn cart-btn" onclick="addCart()">
@@ -210,157 +371,270 @@ footer ul li:hover{color:#fff}
   <div class="mnav-item" style="color:#e53935">Top ponuky</div>
 </div>
 
-<!-- HERO -->
-<div id="hero">
-  <div class="slide active" id="slide-0">
-    <div class="slide-bg" style="background:linear-gradient(105deg,#1a1a1a 45%,#2d2d2d)"></div>
-    <div class="slide-content">
-      <h1>VÁŠ OUTFIT,<br>VÁŠ PRÍBEH</h1>
-      <p>Nová kolekcia na šport aj voľný čas.</p>
-      <span class="cta">Nakupovať teraz</span>
+<!-- ===== HOME PAGE ===== -->
+<div id="page-home" class="page active">
+  <div id="hero">
+    <div class="slide active" id="slide-0"><div class="slide-bg" style="background:linear-gradient(105deg,#1a1a1a 45%,#2d2d2d)"></div><div class="slide-content"><h1>VÁŠ OUTFIT,<br>VÁŠ PRÍBEH</h1><p>Nová kolekcia na šport aj voľný čas.</p><span class="cta">Nakupovať teraz</span></div></div>
+    <div class="slide" id="slide-1"><div class="slide-bg" style="background:linear-gradient(105deg,#0d1b2a 45%,#1b3a4b)"></div><div class="slide-content"><h1>IDEÁLNY<br>PARŤÁK</h1><p>FueFocus Drink pre prácu, štúdium aj šport.</p><span class="cta">Zistiť viac</span></div></div>
+    <div class="slide" id="slide-2"><div class="slide-bg" style="background:linear-gradient(105deg,#1a0a00 45%,#3d1500)"></div><div class="slide-content"><h1>PROTEÍNY<br>S 40% ZĽAVOU</h1><p>Limitovaná akcia. Len do vypredania zásob.</p><span class="cta">Využiť zľavu</span></div></div>
+    <button class="hero-arrow" id="hero-prev" onclick="heroNav(-1)">‹</button>
+    <button class="hero-arrow" id="hero-next" onclick="heroNav(1)">›</button>
+    <div id="hero-dots"></div>
+  </div>
+
+  <div id="trustbar">
+    <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><div class="trust-text"><strong>6M+</strong><span>spokojných zákazníkov</span></div></div>
+    <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="trust-text"><strong>&lt;24 hodín</strong><span>rýchle dodanie</span></div></div>
+    <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div><div class="trust-text"><strong>Doprava zadarmo</strong><span>pri nákupe nad 60 €</span></div></div>
+    <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div><div class="trust-text"><strong>9000+ produktov</strong><span>najširší sortiment skladom</span></div></div>
+  </div>
+
+  <!-- GOALS -->
+  <div class="section">
+    <div class="section-inner">
+      <div class="section-header"><span class="section-title">Tvoj cieľ</span><span class="section-link">Zobraziť všetky →</span></div>
+      <div class="goals-row">
+        <div class="goal-card"><div class="goal-img" style="background:#1a1a1a">🏃‍♀️</div><div class="goal-label">Schudnúť<svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+        <div class="goal-card"><div class="goal-img" style="background:#f0ede8">💪</div><div class="goal-label">Budovať svaly<svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+        <div class="goal-card"><div class="goal-img" style="background:#e8edf0">⚡</div><div class="goal-label">Regenerácia<svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+        <div class="goal-card"><div class="goal-img" style="background:#f5f0e8">🏆</div><div class="goal-label">Zlepšiť výkon<svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+        <div class="goal-card"><div class="goal-img" style="background:#e8f0e8">🥗</div><div class="goal-label">Zdravo maškrtiť<svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+      </div>
     </div>
   </div>
-  <div class="slide" id="slide-1">
-    <div class="slide-bg" style="background:linear-gradient(105deg,#0d1b2a 45%,#1b3a4b)"></div>
-    <div class="slide-content">
-      <h1>IDEÁLNY<br>PARŤÁK</h1>
-      <p>Fokus na 100 %. FueFocus Drink pre prácu, štúdium aj šport.</p>
-      <span class="cta">Zistiť viac</span>
+
+  <!-- OBLEČENIE -->
+  <div class="section" style="padding-top:0">
+    <div class="section-inner">
+      <div class="section-header"><span class="section-title">Oblečenie</span><span class="section-link">Zobraziť všetky →</span></div>
+      <div class="products-grid" id="grid-clothing"></div>
+      <div class="scroll-outer">
+        <button class="scroll-arr arr-l hidden" id="scroll-clothing-l" onclick="scrollRow('scroll-clothing',-1)">‹</button>
+        <div class="products-scroll" id="scroll-clothing"></div>
+        <button class="scroll-arr arr-r" id="scroll-clothing-r" onclick="scrollRow('scroll-clothing',1)">›</button>
+      </div>
     </div>
   </div>
-  <div class="slide" id="slide-2">
-    <div class="slide-bg" style="background:linear-gradient(105deg,#1a0a00 45%,#3d1500)"></div>
-    <div class="slide-content">
-      <h1>PROTEÍNY<br>S 40% ZĽAVOU</h1>
-      <p>Limitovaná akcia. Len do vypredania zásob.</p>
-      <span class="cta">Využiť zľavu</span>
+
+  <!-- RECENTLY VIEWED HP -->
+  <div id="rv-hp" class="rv-widget" style="display:none">
+    <div class="rv-widget-header">
+      <div class="rv-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <span class="rv-title">Nedávno zobrazené</span>
+      <span class="rv-sub">— pokračuj tam, kde si skončil</span>
+      <span class="rv-badge" id="rv-hp-badge">0</span>
+    </div>
+    <div class="rv-body">
+      <div id="rv-hp-inner"></div>
+      <div class="rv-tip"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Zákazníci sa vracajú k produktom o 20 % častejšie vďaka tomuto widgetu</div>
     </div>
   </div>
-  <button class="hero-arrow" id="hero-prev" onclick="heroNav(-1)">‹</button>
-  <button class="hero-arrow" id="hero-next" onclick="heroNav(1)">›</button>
-  <div id="hero-dots"></div>
-</div>
 
-<!-- TRUST BAR -->
-<div id="trustbar">
-  <div class="trust-item">
-    <div class="trust-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
-    <div class="trust-text"><strong>6M+</strong><span>spokojných zákazníkov</span></div>
-  </div>
-  <div class="trust-item">
-    <div class="trust-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-    <div class="trust-text"><strong>&lt;24 hodín</strong><span>rýchle dodanie</span></div>
-  </div>
-  <div class="trust-item">
-    <div class="trust-icon"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
-    <div class="trust-text"><strong>Doprava zadarmo</strong><span>pri nákupe nad 60 €</span></div>
-  </div>
-  <div class="trust-item">
-    <div class="trust-icon"><svg viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
-    <div class="trust-text"><strong>9000+ produktov</strong><span>najširší sortiment skladom</span></div>
-  </div>
-</div>
-
-<!-- GOALS -->
-<div class="section">
-  <div class="section-header">
-    <span style="font-size:14px">Objavte overené produkty podľa vášho cieľa. Chcete:</span>
-    <div class="goals-nav">
-      <button class="gnav-btn">‹</button>
-      <button class="gnav-btn">›</button>
+  <!-- VÝŽIVA -->
+  <div class="section">
+    <div class="section-inner">
+      <div class="section-header"><span class="section-title">Výživa &amp; nápoje</span><span class="section-link">Zobraziť všetky →</span></div>
+      <div class="products-grid" id="grid-food"></div>
+      <div class="scroll-outer">
+        <button class="scroll-arr arr-l hidden" id="scroll-food-l" onclick="scrollRow('scroll-food',-1)">‹</button>
+        <div class="products-scroll" id="scroll-food"></div>
+        <button class="scroll-arr arr-r" id="scroll-food-r" onclick="scrollRow('scroll-food',1)">›</button>
+      </div>
     </div>
   </div>
-  <div class="goals-row">
-    <div class="goal-card"><div class="goal-img" style="background:#1a1a1a">🏃‍♀️</div><div class="goal-label">Schudnúť<svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
-    <div class="goal-card"><div class="goal-img" style="background:#f0ede8">💪</div><div class="goal-label">Budovať svalovú hmotu<svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
-    <div class="goal-card"><div class="goal-img" style="background:#e8edf0">⚡</div><div class="goal-label">Podporiť regeneráciu<svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
-    <div class="goal-card"><div class="goal-img" style="background:#f5f0e8">🏆</div><div class="goal-label">Zlepšiť výkon<svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
-    <div class="goal-card"><div class="goal-img" style="background:#e8f0e8">🥗</div><div class="goal-label">Zdravšie maškrtiť<svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
-  </div>
+
+  <footer>
+    <div><h4>GymBeam</h4><ul><li>O nás</li><li>Kariéra</li><li>Blog</li><li>Kontakt</li></ul></div>
+    <div><h4>Zákaznícka podpora</h4><ul><li>Doprava a vrátenie</li><li>Platobné metódy</li><li>Reklamácie</li><li>FAQ</li></ul></div>
+    <div><h4>Kategórie</h4><ul><li>Proteíny</li><li>Kreatín</li><li>Vitamíny</li><li>Spaľovače tukov</li></ul></div>
+    <div><h4>Sleduj nás</h4><ul><li>Instagram</li><li>Facebook</li><li>YouTube</li><li>TikTok</li></ul></div>
+  </footer>
+  <div class="footer-btm">© 2025 GymBeam s.r.o. Všetky práva vyhradené.</div>
 </div>
 
-<!-- OBLEČENIE -->
-<div class="section" style="padding-top:0">
-  <div class="products-grid" id="grid-clothing"></div>
-</div>
-
-<!-- RECENTLY VIEWED -->
-<div id="rv-section" style="display:none">
-  <div id="rv-header">
-    <div class="rv-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-    <span class="rv-title">Nedávno zobrazené</span>
-    <span class="rv-sub">— pokračuj tam, kde si skončil</span>
-    <span class="rv-badge" id="rv-badge">0</span>
-  </div>
-  <div id="rv-body">
-    <div id="rv-slider-wrap">
-      <button class="rv-arr" id="rv-prev" onclick="rvSlide(-1)">‹</button>
-      <div id="rv-list"></div>
-      <button class="rv-arr" id="rv-next" onclick="rvSlide(1)">›</button>
+<!-- ===== PDP PAGE ===== -->
+<div id="page-pdp" class="page">
+  <div class="pdp-wrap">
+    <div class="pdp-breadcrumb">
+      <span onclick="goPage('home')">Domov</span><span class="sep">›</span>
+      <span>Proteíny</span><span class="sep">›</span>
+      <span>Just Whey – GymBeam</span>
     </div>
-    <div class="rv-tip">
-      <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-      Zákazníci sa vracajú k produktom o 20 % častejšie vďaka tomuto widgetu
+    <div class="pdp-main">
+      <div class="pdp-gallery">
+        <div class="pdp-main-img" id="pdp-main-img">🥛</div>
+        <div class="pdp-thumbs">
+          <div class="pdp-thumb active" onclick="setThumb(this,'🥛')">🥛</div>
+          <div class="pdp-thumb" onclick="setThumb(this,'🍫')">🍫</div>
+          <div class="pdp-thumb" onclick="setThumb(this,'🍓')">🍓</div>
+          <div class="pdp-thumb" onclick="setThumb(this,'🍦')">🍦</div>
+        </div>
+      </div>
+      <div class="pdp-info">
+        <div class="pdp-brand">GymBeam</div>
+        <h1 class="pdp-name">Just Whey Grass-Fed Protein – GymBeam</h1>
+        <div class="pdp-rating-row">
+          <span class="pdp-stars">★★★★★</span>
+          <span class="pdp-rcount">4,7 (17 622 recenzií)</span>
+          <span class="pdp-badge-sk">🇸🇰 SK produkt</span>
+        </div>
+        <div style="font-size:12px;font-weight:600;color:#555;margin-bottom:7px">Hmotnosť</div>
+        <div class="pdp-weight-row">
+          <button class="pdp-weight-btn active" onclick="selectWeight(this,'29,90 €','29,90 € / kg')">1000 g</button>
+          <button class="pdp-weight-btn" onclick="selectWeight(this,'15,90 €','31,80 € / kg')">500 g</button>
+          <button class="pdp-weight-btn" onclick="selectWeight(this,'54,90 €','27,45 € / kg')">2000 g</button>
+        </div>
+        <div class="pdp-flavour-label">Príchuť</div>
+        <select class="pdp-flavour-sel"><option>Vanilková zmrzlina</option><option>Čokoláda</option><option>Jahoda</option><option>Banán</option><option>Bez príchute</option></select>
+        <div class="pdp-price-row"><span class="pdp-price" id="pdp-price">29,90 €</span></div>
+        <div class="pdp-price-per" id="pdp-price-per">29,90 € / kg</div>
+        <div class="pdp-qty-row">
+          <div class="qty-ctrl">
+            <button class="qty-btn" onclick="changeQty(-1)">−</button>
+            <input class="qty-val" id="qty-val" value="1" readonly>
+            <button class="qty-btn" onclick="changeQty(1)">+</button>
+          </div>
+          <button class="pdp-atc" onclick="addCart()"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Pridať do košíka</button>
+          <button class="pdp-wish"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+        </div>
+        <div class="pdp-badges">
+          <div class="pdp-badge pdp-badge-delivery"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Odoslanie do 24 h</div>
+          <div class="pdp-badge pdp-badge-free"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>Doprava zadarmo nad 60 €</div>
+          <div class="pdp-badge"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Vrátenie 100 dní</div>
+        </div>
+      </div>
     </div>
+
+    <!-- TABS -->
+    <div class="pdp-tabs">
+      <div class="pdp-tab-nav">
+        <button class="pdp-tab-btn active" onclick="switchTab(this,'tab-comp')">Zloženie</button>
+        <button class="pdp-tab-btn" onclick="switchTab(this,'tab-nut')">Nutričné hodnoty</button>
+        <button class="pdp-tab-btn" onclick="switchTab(this,'tab-amino')">Aminokyseliny</button>
+        <button class="pdp-tab-btn" onclick="switchTab(this,'tab-rev')">Recenzie (17 622)</button>
+      </div>
+      <div id="tab-comp" class="pdp-tab-content active">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+          <div><h3 style="font-size:13px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.3px">Zloženie</h3><p class="comp-text"><b>Srvátkový proteínový koncentrát</b>, srvátkový proteínový izolát, arómy, farby (E-163, E-160d), sladidlá (E-955, E-960, sukralóza), vitamín B6, DigeZyme® – zmes tráviacich enzýmov, bromelaín.</p></div>
+          <div><h3 style="font-size:13px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.3px">Dávkovanie</h3><div class="dosage-box">Rozmiešajte 1 odmerku (30 g) v 200–300 ml vody. Konzumujte 1–3× denne podľa výživových potrieb.</div></div>
+        </div>
+        <div style="margin-top:16px;padding:12px;background:#fffbf0;border-radius:6px;border:1px solid #ffe082;font-size:12px;color:#6d4c00"><b>Upozornenie:</b> Výživový doplnok. Uchovávajte mimo dosahu malých detí. Alergény sú zvýraznené v zložení.</div>
+      </div>
+      <div id="tab-nut" class="pdp-tab-content">
+        <div class="nut-selector">
+          <button class="nut-sel-btn active" onclick="this.parentNode.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Vanilková zmrzlina</button>
+          <button class="nut-sel-btn" onclick="this.parentNode.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active')">100 g</button>
+          <button class="nut-sel-btn" onclick="this.parentNode.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active')">30 g</button>
+        </div>
+        <div class="nut-table-wrap">
+          <table class="nut-table">
+            <thead><tr><th>Nutričné hodnoty</th><th>na 100 g</th><th>na 30 g</th></tr></thead>
+            <tbody>
+              <tr><td>Energetická hodnota</td><td>1 635 kJ / 386 kcal</td><td>491 kJ / 116 kcal</td></tr>
+              <tr><td>Tuky</td><td>7 g</td><td>2,1 g</td></tr>
+              <tr><td>– z toho nasýtené</td><td>3,5 g</td><td>1,1 g</td></tr>
+              <tr><td>Sacharidy</td><td>8 g</td><td>2,4 g</td></tr>
+              <tr><td>– z toho cukry</td><td>6 g</td><td>1,8 g</td></tr>
+              <tr><td>Bielkoviny</td><td><b>74 g</b></td><td><b>22,2 g</b></td></tr>
+              <tr><td>Soľ</td><td>0,5 g</td><td>0,15 g</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="nut-note">* % referenčná hodnota príjmu pre dospelého (8 400 kJ / 2 000 kcal)</p>
+      </div>
+      <div id="tab-amino" class="pdp-tab-content">
+        <p style="font-size:13px;color:#666;margin-bottom:12px">Aminokyselinový profil na 100 g</p>
+        <div class="amino-grid">
+          <div><div class="amino-row"><span>Leucín</span><span class="amino-val">10,3 g</span></div><div class="amino-row"><span>Izoleucín</span><span class="amino-val">5,71 g</span></div><div class="amino-row"><span>Valín</span><span class="amino-val">4,99 g</span></div><div class="amino-row"><span>Lyzín</span><span class="amino-val">7,17 g</span></div><div class="amino-row"><span>Treonín</span><span class="amino-val">6,14 g</span></div><div class="amino-row"><span>BCAA celkom</span><span class="amino-val" style="color:#ff6b00">21,2 g</span></div></div>
+          <div><div class="amino-row"><span>Kyselina glutámová</span><span class="amino-val">18,3 g</span></div><div class="amino-row"><span>Kyselina asparágová</span><span class="amino-val">10,2 g</span></div><div class="amino-row"><span>Alanín</span><span class="amino-val">4,97 g</span></div><div class="amino-row"><span>Serín</span><span class="amino-val">4,84 g</span></div><div class="amino-row"><span>Prolín</span><span class="amino-val">5,57 g</span></div><div class="amino-row"><span>EAA celkom</span><span class="amino-val" style="color:#ff6b00">37,2 g</span></div></div>
+        </div>
+      </div>
+      <div id="tab-rev" class="pdp-tab-content">
+        <div class="reviews-summary">
+          <div class="reviews-score"><div class="big">4,7</div><div class="stars-big">★★★★★</div><div class="sub">17 622 recenzií</div></div>
+          <div class="reviews-bars">
+            <div class="bar-row"><span class="bar-label">5 ★</span><div class="bar-track"><div class="bar-fill" style="width:72%"></div></div><span class="bar-count">72%</span></div>
+            <div class="bar-row"><span class="bar-label">4 ★</span><div class="bar-track"><div class="bar-fill" style="width:18%"></div></div><span class="bar-count">18%</span></div>
+            <div class="bar-row"><span class="bar-label">3 ★</span><div class="bar-track"><div class="bar-fill" style="width:6%"></div></div><span class="bar-count">6%</span></div>
+            <div class="bar-row"><span class="bar-label">2 ★</span><div class="bar-track"><div class="bar-fill" style="width:2%"></div></div><span class="bar-count">2%</span></div>
+            <div class="bar-row"><span class="bar-label">1 ★</span><div class="bar-track"><div class="bar-fill" style="width:2%"></div></div><span class="bar-count">2%</span></div>
+          </div>
+        </div>
+        <div class="review-card"><div class="review-head"><div><div class="review-author">Matúš K.</div><div class="review-verified">✓ Overený nákup</div></div><div style="text-align:right"><div class="review-stars">★★★★★</div><div class="review-date">12. 3. 2025</div></div></div><p class="review-text">Najlepší proteín, aký som skúšal. Výborná rozpustnosť a skvele chutí. Používam ho 2 roky.</p></div>
+        <div class="review-card"><div class="review-head"><div><div class="review-author">Jana M.</div><div class="review-verified">✓ Overený nákup</div></div><div style="text-align:right"><div class="review-stars">★★★★☆</div><div class="review-date">28. 2. 2025</div></div></div><p class="review-text">Vanilková zmrzlina je moja obľúbená príchuť. Jedna hviezda menej za občasnú penu.</p></div>
+      </div>
+    </div>
+
+    <!-- RECOMMENDED -->
+    <div class="rec-section">
+      <div class="rec-title">Zákazníci si tiež kúpili</div>
+      <div class="products-grid" id="pdp-rec-grid"></div>
+      <div class="scroll-outer">
+        <button class="scroll-arr arr-l hidden" id="pdp-rec-scroll-l" onclick="scrollRow('pdp-rec-scroll',-1)">‹</button>
+        <div class="products-scroll" id="pdp-rec-scroll"></div>
+        <button class="scroll-arr arr-r" id="pdp-rec-scroll-r" onclick="scrollRow('pdp-rec-scroll',1)">›</button>
+      </div>
+    </div>
+
+    <!-- RECENTLY VIEWED PDP -->
+    <div id="rv-pdp" class="rv-widget" style="display:none;margin:0 0 20px">
+      <div class="rv-widget-header">
+        <div class="rv-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <span class="rv-title">Nedávno zobrazené</span>
+        <span class="rv-sub">— pokračuj tam, kde si skončil</span>
+        <span class="rv-badge" id="rv-pdp-badge">0</span>
+      </div>
+      <div class="rv-body">
+        <div id="rv-pdp-inner"></div>
+        <div class="rv-tip"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Zákazníci sa vracajú k produktom o 20 % častejšie vďaka tomuto widgetu</div>
+      </div>
+    </div>
+
   </div>
+  <footer>
+    <div><h4>GymBeam</h4><ul><li>O nás</li><li>Kariéra</li><li>Blog</li><li>Kontakt</li></ul></div>
+    <div><h4>Zákaznícka podpora</h4><ul><li>Doprava a vrátenie</li><li>Platobné metódy</li><li>Reklamácie</li><li>FAQ</li></ul></div>
+    <div><h4>Kategórie</h4><ul><li>Proteíny</li><li>Kreatín</li><li>Vitamíny</li><li>Spaľovače tukov</li></ul></div>
+    <div><h4>Sleduj nás</h4><ul><li>Instagram</li><li>Facebook</li><li>YouTube</li><li>TikTok</li></ul></div>
+  </footer>
+  <div class="footer-btm" style="margin-bottom:56px">© 2025 GymBeam s.r.o. Všetky práva vyhradené.</div>
 </div>
 
-<!-- VÝŽIVA -->
-<div class="section">
-  <div class="products-grid" id="grid-food"></div>
-</div>
-
-<!-- FOOTER -->
-<footer>
-  <div><h4>GymBeam</h4><ul><li>O nás</li><li>Kariéra</li><li>Blog</li><li>Kontakt</li><li>Affiliate program</li></ul></div>
-  <div><h4>Zákaznícka podpora</h4><ul><li>Doprava a vrátenie</li><li>Platobné metódy</li><li>Reklamácie</li><li>FAQ</li><li>Vernostný program</li></ul></div>
-  <div><h4>Kategórie</h4><ul><li>Proteíny</li><li>Kreatín</li><li>Vitamíny</li><li>Spaľovače tukov</li><li>Oblečenie</li></ul></div>
-  <div><h4>Sleduj nás</h4><ul><li>Instagram</li><li>Facebook</li><li>YouTube</li><li>TikTok</li></ul></div>
-</footer>
-<div class="footer-btm">© 2025 GymBeam s.r.o. Všetky práva vyhradené.</div>
 <div id="toast"></div>
 
 <script>
-const P = [
-  {id:1,  n:'Šortky 2v1 čierne – STRIX',              p:'32,95 €', e:'🩳', stars:4.2, rc:20,  sale:null,         oldp:null,      vegan:false, flag:'',   cat:'clothing'},
-  {id:2,  n:'Tričko Beyond Limits Black – GymBeam',    p:'9,95 €',  e:'👕', stars:4.7, rc:164, sale:null,         oldp:null,      vegan:false, flag:'',   cat:'clothing'},
-  {id:3,  n:'Tričko Basic Black – GymBeam',            p:'9,95 €',  e:'🖤', stars:4.7, rc:354, sale:null,         oldp:null,      vegan:false, flag:'',   cat:'clothing'},
-  {id:4,  n:'Tielko Essential Hoodie Tank – STRIX',    p:'15,95 €', e:'🎽', stars:5.0, rc:6,   sale:'ZĽAVA -31%', oldp:'22,95 €', vegan:false, flag:'',   cat:'clothing'},
-  {id:5,  n:'Šortky Washed Terra – STRIX',             p:'22,95 €', e:'🩳', stars:5.0, rc:4,   sale:'ZĽAVA -30%', oldp:'32,95 €', vegan:false, flag:'',   cat:'clothing'},
-  {id:6,  n:'Tričko Grow Black – GymBeam',             p:'4,95 €',  e:'👕', stars:4.9, rc:78,  sale:'ZĽAVA -62%', oldp:'12,90 €', vegan:false, flag:'',   cat:'clothing'},
-  {id:7,  n:'Just Whey Grass-Fed Protein – GymBeam',   p:'29,90 €', e:'🥛', stars:4.7, rc:181, sale:null,         oldp:null,      vegan:false, flag:'SK', cat:'protein'},
-  {id:8,  n:'MOXY daily+ 330 ml – GymBeam',            p:'1,99 €',  e:'🧃', stars:4.5, rc:92,  sale:null,         oldp:null,      vegan:true,  flag:'',   cat:'drink'},
-  {id:9,  n:'Proteínové chipsy – GymBeam',             p:'1,49 €',  e:'🥨', stars:4.7, rc:511, sale:null,         oldp:null,      vegan:true,  flag:'SK', cat:'food'},
-  {id:10, n:'MoiMüv Protein Spread – GymBeam',         p:'7,90 €',  e:'🍫', stars:4.8, rc:204, sale:null,         oldp:null,      vegan:false, flag:'',   cat:'food'},
-  {id:11, n:'MoiMüv Protein Milkshake – GymBeam',      p:'2,49 €',  e:'🥤', stars:4.6, rc:312, sale:'AŽ -23%',    oldp:'3,19 €',  vegan:false, flag:'SK', cat:'drink'},
-  {id:12, n:'MOXY power+ Energetický nápoj 330 ml',    p:'1,99 €',  e:'⚡', stars:4.3, rc:87,  sale:null,         oldp:null,      vegan:true,  flag:'',   cat:'drink'},
+const P=[
+  {id:1,n:'Šortky 2v1 čierne – STRIX',p:'32,95 €',e:'🩳',stars:4.2,rc:20,sale:null,oldp:null,vegan:false,flag:'',cat:'clothing'},
+  {id:2,n:'Tričko Beyond Limits – GymBeam',p:'9,95 €',e:'👕',stars:4.7,rc:164,sale:null,oldp:null,vegan:false,flag:'',cat:'clothing'},
+  {id:3,n:'Tričko Basic Black – GymBeam',p:'9,95 €',e:'🖤',stars:4.7,rc:354,sale:null,oldp:null,vegan:false,flag:'',cat:'clothing'},
+  {id:4,n:'Tielko Essential Tank – STRIX',p:'15,95 €',e:'🎽',stars:5.0,rc:6,sale:'ZĽAVA -31%',oldp:'22,95 €',vegan:false,flag:'',cat:'clothing'},
+  {id:5,n:'Šortky Washed Terra – STRIX',p:'22,95 €',e:'🩳',stars:5.0,rc:4,sale:'ZĽAVA -30%',oldp:'32,95 €',vegan:false,flag:'',cat:'clothing'},
+  {id:6,n:'Tričko Grow Black – GymBeam',p:'4,95 €',e:'👕',stars:4.9,rc:78,sale:'ZĽAVA -62%',oldp:'12,90 €',vegan:false,flag:'',cat:'clothing'},
+  {id:7,n:'Just Whey Grass-Fed Protein',p:'29,90 €',e:'🥛',stars:4.7,rc:181,sale:null,oldp:null,vegan:false,flag:'SK',cat:'protein'},
+  {id:8,n:'MOXY daily+ 330 ml – GymBeam',p:'1,99 €',e:'🧃',stars:4.5,rc:92,sale:null,oldp:null,vegan:true,flag:'',cat:'drink'},
+  {id:9,n:'Proteínové chipsy – GymBeam',p:'1,49 €',e:'🥨',stars:4.7,rc:511,sale:null,oldp:null,vegan:true,flag:'SK',cat:'food'},
+  {id:10,n:'Protein Spread – GymBeam',p:'7,90 €',e:'🍫',stars:4.8,rc:204,sale:null,oldp:null,vegan:false,flag:'',cat:'food'},
+  {id:11,n:'Protein Milkshake – GymBeam',p:'2,49 €',e:'🥤',stars:4.6,rc:312,sale:'AŽ -23%',oldp:'3,19 €',vegan:false,flag:'SK',cat:'drink'},
+  {id:12,n:'MOXY power+ 330 ml',p:'1,99 €',e:'⚡',stars:4.3,rc:87,sale:null,oldp:null,vegan:true,flag:'',cat:'drink'},
 ];
 
-let recent = [];
-try{ recent = JSON.parse(localStorage.getItem('gb_rv')||'[]'); }catch(e){}
+/* Expanded pool for scroll demo (reuse with slight name change) */
+const POOL=[...P,...P.map((x,i)=>({...x,id:x.id+100,n:x.n+' (2)'}))]
 
-/* ---- helpers ---- */
-function starsHtml(n){
-  let s='';
-  for(let i=1;i<=5;i++) s+=`<span class="${i<=Math.round(n)?'star':'star-e'}">★</span>`;
-  return s;
-}
-function starsStr(n){ let s=''; for(let i=1;i<=5;i++) s+=i<=Math.round(n)?'★':'☆'; return s; }
-function hl(txt,q){
-  const i=txt.toLowerCase().indexOf(q.toLowerCase());
-  if(i<0)return txt;
-  return txt.slice(0,i)+'<b>'+txt.slice(i,i+q.length)+'</b>'+txt.slice(i+q.length);
-}
+let recent=[];
+let currentScenario=3;
 
-/* ---- product card HTML ---- */
-function pcardHtml(p){
-  return `<div class="pcard" onclick="openP(${p.id})">
+function starsHtml(n){let s='';for(let i=1;i<=5;i++)s+=`<span class="${i<=Math.round(n)?'star':'star-e'}">★</span>`;return s;}
+function starsStr(n){let s='';for(let i=1;i<=5;i++)s+=i<=Math.round(n)?'★':'☆';return s;}
+function hl(t,q){const i=t.toLowerCase().indexOf(q.toLowerCase());if(i<0)return t;return t.slice(0,i)+'<b>'+t.slice(i,i+q.length)+'</b>'+t.slice(i+q.length);}
+
+function pcardHtml(p,extraClass=''){
+  return`<div class="pcard${extraClass}" onclick="openP(${p.id})">
     <div class="pcard-img-wrap">
       <div class="pimg">${p.e}</div>
       ${p.sale?`<div class="pcard-badge">${p.sale}</div>`:''}
-      <div class="pcard-cart" onclick="event.stopPropagation();addCart()">
-        <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-      </div>
+      <div class="pcard-wish-sm"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+      <div class="pcard-cart" onclick="event.stopPropagation();addCart()"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div>
       ${p.vegan?`<div class="pcard-vegan">VEGAN</div>`:p.flag?`<div class="pcard-flag">🇸🇰</div>`:''}
     </div>
     <div class="pcard-body">
@@ -371,114 +645,147 @@ function pcardHtml(p){
   </div>`;
 }
 
-/* ---- grids ---- */
-function renderGrids(){
-  document.getElementById('grid-clothing').innerHTML = P.filter(x=>x.cat==='clothing').map(pcardHtml).join('');
-  document.getElementById('grid-food').innerHTML     = P.filter(x=>x.cat!=='clothing').map(pcardHtml).join('');
+function isMobile(){return window.innerWidth<=768;}
+
+/* Build RV inner HTML based on count */
+function scrollArrHtml(id){
+  return`<button class="scroll-arr arr-l hidden" id="${id}-l" onclick="scrollRow('${id}',-1)">‹</button>
+         <button class="scroll-arr arr-r" id="${id}-r" onclick="scrollRow('${id}',1)">›</button>`;
+}
+function scrollRow(id,dir){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.scrollBy({left:dir*170,behavior:'smooth'});
+  setTimeout(()=>updateArrows(id),320);
+}
+function updateArrows(id){
+  const el=document.getElementById(id);if(!el)return;
+  const l=document.getElementById(id+'-l');
+  const r=document.getElementById(id+'-r');
+  if(l)l.classList.toggle('hidden',el.scrollLeft<8);
+  if(r)r.classList.toggle('hidden',el.scrollLeft+el.offsetWidth>=el.scrollWidth-8);
+}
+function bindScroll(id){
+  const el=document.getElementById(id);if(!el)return;
+  el.addEventListener('scroll',()=>updateArrows(id),{passive:true});
+  updateArrows(id);
 }
 
-/* ---- recently viewed ---- */
+function rvInnerHtml(items, uid){
+  if(!items.length) return '';
+  const mob=isMobile();
+  if(mob){
+    return`<div class="scroll-outer">
+      ${scrollArrHtml(uid)}
+      <div class="rv-scroll" id="${uid}">${items.map(p=>pcardHtml(p)).join('')}</div>
+    </div>`;
+  } else {
+    /* Desktop: fixed 160px cards in a row (max 6), no stretch */
+    return`<div style="display:flex;gap:12px;flex-wrap:nowrap">${items.map(p=>pcardHtml(p,' desktop-rv-card')).join('')}</div>`;
+  }
+}
+
+function setScenario(n){
+  currentScenario=n;
+  document.querySelectorAll('.sc-btn').forEach(b=>b.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+
+  if(n===0){
+    recent=[];
+  } else {
+    /* pick n distinct products from pool */
+    recent=POOL.slice(0,n).map(x=>x.id);
+  }
+  try{localStorage.setItem('gb_rv',JSON.stringify(recent));}catch(e){}
+  renderRecentAll();
+  showToast(n===0?'Žiadne nedávno zobrazené produkty':`Scenár: ${n} produkt${n===1?'':'${n<5?"y":"ov"}'}`);
+}
+
+function renderRecentAll(){
+  const items=recent.map(id=>POOL.find(x=>x.id===id)).filter(Boolean);
+  const count=items.length;
+
+  /* HP */
+  const hpSec=document.getElementById('rv-hp');
+  document.getElementById('rv-hp-badge').textContent=count;
+  if(!count){hpSec.style.display='none';}
+  else{hpSec.style.display='block';document.getElementById('rv-hp-inner').innerHTML=rvInnerHtml(items,'rv-hp-scroll');setTimeout(()=>bindScroll('rv-hp-scroll'),50);}
+
+  /* PDP */
+  const pdpSec=document.getElementById('rv-pdp');
+  document.getElementById('rv-pdp-badge').textContent=count;
+  if(!count){pdpSec.style.display='none';}
+  else{pdpSec.style.display='block';document.getElementById('rv-pdp-inner').innerHTML=rvInnerHtml(items,'rv-pdp-scroll');setTimeout(()=>bindScroll('rv-pdp-scroll'),50);}
+}
+
+function renderGrids(){
+  const clothing=P.filter(x=>x.cat==='clothing');
+  const food=P.filter(x=>x.cat!=='clothing');
+  const rec=food.slice(0,6);
+
+  document.getElementById('grid-clothing').innerHTML=clothing.map(p=>pcardHtml(p)).join('');
+  document.getElementById('scroll-clothing').innerHTML=clothing.map(p=>pcardHtml(p)).join('');
+  document.getElementById('grid-food').innerHTML=food.map(p=>pcardHtml(p)).join('');
+  document.getElementById('scroll-food').innerHTML=food.map(p=>pcardHtml(p)).join('');
+  document.getElementById('pdp-rec-grid').innerHTML=rec.map(p=>pcardHtml(p)).join('');
+  document.getElementById('pdp-rec-scroll').innerHTML=rec.map(p=>pcardHtml(p)).join('');
+  setTimeout(()=>{bindScroll('scroll-clothing');bindScroll('scroll-food');bindScroll('pdp-rec-scroll');},50);
+}
+
 function saveRecent(id){
-  recent=recent.filter(x=>x!==id);
-  recent.unshift(id);
-  if(recent.length>6)recent=recent.slice(0,6);
+  recent=recent.filter(x=>x!==id);recent.unshift(id);
+  if(recent.length>currentScenario&&currentScenario>0)recent=recent.slice(0,currentScenario);
   try{localStorage.setItem('gb_rv',JSON.stringify(recent));}catch(e){}
 }
-function renderRecent(){
-  const sec=document.getElementById('rv-section');
-  const list=document.getElementById('rv-list');
-  const badge=document.getElementById('rv-badge');
-  const items=recent.map(id=>P.find(x=>x.id===id)).filter(Boolean);
-  badge.textContent=items.length;
-  if(!items.length){sec.style.display='none';return;}
-  sec.style.display='block';
-  list.innerHTML=items.map(pcardHtml).join('');
-}
+
 function openP(id){
-  saveRecent(id);
-  renderRecent();
-  const p=P.find(x=>x.id===id);
-  if(p) showToast('Zobrazuješ: '+p.n);
-  setTimeout(()=>document.getElementById('rv-section').scrollIntoView({behavior:'smooth',block:'nearest'}),120);
-}
-function rvSlide(dir){
-  const list=document.getElementById('rv-list');
-  const card=list.querySelector('.pcard');
-  if(!card)return;
-  list.scrollLeft+=dir*(card.offsetWidth+12)*2;
+  saveRecent(id);goPage('pdp');renderRecentAll();
 }
 
-/* ---- search dropdown ---- */
+function goPage(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+/* SEARCH */
 function sdSearch(q){
-  const dd=document.getElementById('sd');
-  q=q.trim();
+  const dd=document.getElementById('sd');q=q.trim();
   if(q.length<2){dd.classList.remove('open');return;}
   const hits=P.filter(x=>x.n.toLowerCase().includes(q.toLowerCase()));
-  if(!hits.length){
-    dd.innerHTML=`<div class="sd-empty">Žiadne výsledky pre „${q}"</div>`;
-    dd.classList.add('open');return;
-  }
-  const cats=[...new Set(hits.map(x=>x.cat))];
-  const catLabels={clothing:'Oblečenie',protein:'Proteíny',food:'Potraviny',drink:'Nápoje'};
+  if(!hits.length){dd.innerHTML=`<div class="sd-empty">Žiadne výsledky pre „${q}"</div>`;dd.classList.add('open');return;}
   let html=`<div class="sd-label">Tovar</div>`;
   hits.slice(0,6).forEach(p=>{
     html+=`<div class="sd-row" onmousedown="openP(${p.id})">
       <div class="sd-thumb">${p.e}</div>
-      <div class="sd-info">
-        <div class="sd-name">${hl(p.n,q)}</div>
-        <div class="sd-meta"><span class="sd-stars">${starsStr(p.stars)}</span><span class="sd-rc">(${p.rc})</span></div>
-      </div>
-      <div class="sd-prices">
-        ${p.oldp?`<span class="sd-oldp">${p.oldp}</span>`:''}
-        <span class="sd-price${p.sale?' sale':''}">${p.p}</span>
-      </div>
+      <div class="sd-info"><div class="sd-name">${hl(p.n,q)}</div><div style="display:flex;gap:4px"><span class="sd-stars">${starsStr(p.stars)}</span><span class="sd-rc">(${p.rc})</span></div></div>
+      <div class="sd-prices">${p.oldp?`<span class="sd-oldp">${p.oldp}</span>`:''}<span class="sd-price${p.sale?' sale':''}">${p.p}</span></div>
     </div>`;
   });
-  if(cats.length){
-    html+=`<div class="sd-label">Kategórie</div>`;
-    cats.forEach(c=>{
-      html+=`<div class="sd-cat-row" onmousedown="showToast('Kategória: ${catLabels[c]||c}')">
-        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>${catLabels[c]||c}
-      </div>`;
-    });
-  }
-  dd.innerHTML=html;
-  dd.classList.add('open');
+  dd.innerHTML=html;dd.classList.add('open');
 }
-function sdHide(){ document.getElementById('sd').classList.remove('open'); }
+function sdHide(){document.getElementById('sd').classList.remove('open');}
 
-/* ---- cart ---- */
-let cartN=2, cartVal=43.90;
+/* CART */
+let cartN=2,cartVal=43.90;
 function addCart(){
   cartN++;cartVal+=9.95;
   document.getElementById('cart-count').textContent=cartN;
   document.getElementById('cart-total').textContent=cartVal.toFixed(2).replace('.',',')+' €';
   const b=document.getElementById('cart-count');
-  b.style.transform='scale(1.6)';
-  setTimeout(()=>b.style.transform='scale(1)',200);
+  b.style.transform='scale(1.6)';setTimeout(()=>b.style.transform='scale(1)',200);
   showToast('Produkt pridaný do košíka!');
 }
 
-/* ---- toast ---- */
+/* TOAST */
 let toastT;
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  clearTimeout(toastT);
-  toastT=setTimeout(()=>t.classList.remove('show'),2200);
-}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2400);}
 
-/* ---- hero slider ---- */
+/* HERO */
 let sIdx=0,autoT;
 function buildDots(){
-  const d=document.getElementById('hero-dots');
-  d.className='hero-dots';
-  for(let i=0;i<3;i++){
-    const b=document.createElement('button');
-    b.className='hero-dot'+(i===0?' active':'');
-    b.onclick=()=>goSlide(i);
-    d.appendChild(b);
-  }
+  const d=document.getElementById('hero-dots');d.className='hero-dots';
+  for(let i=0;i<3;i++){const b=document.createElement('button');b.className='hero-dot'+(i===0?' active':'');b.onclick=()=>goSlide(i);d.appendChild(b);}
 }
 function goSlide(n){
   document.getElementById('slide-'+sIdx).classList.remove('active');
@@ -488,16 +795,22 @@ function goSlide(n){
 }
 function heroNav(d){goSlide(sIdx+d);clearInterval(autoT);autoT=setInterval(()=>heroNav(1),4500);}
 
-/* ---- seed demo ---- */
-function seed(){
-  if(!recent.length){recent=[3,7,11,1,5,9];try{localStorage.setItem('gb_rv',JSON.stringify(recent));}catch(e){}}
-}
+/* PDP helpers */
+function setThumb(el,e){document.querySelectorAll('.pdp-thumb').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById('pdp-main-img').textContent=e;}
+let qty=1;
+function changeQty(d){qty=Math.max(1,qty+d);document.getElementById('qty-val').value=qty;}
+function selectWeight(el,price,per){document.querySelectorAll('.pdp-weight-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');document.getElementById('pdp-price').textContent=price;document.getElementById('pdp-price-per').textContent=per;}
+function switchTab(btn,id){document.querySelectorAll('.pdp-tab-btn').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.pdp-tab-content').forEach(t=>t.classList.remove('active'));btn.classList.add('active');document.getElementById(id).classList.add('active');}
+function toggleMobSearch(){const sw=document.getElementById('search-wrap');sw.classList.toggle('mob-open');if(sw.classList.contains('mob-open'))document.getElementById('s-input').focus();}
 
-seed();
+window.addEventListener('resize',renderRecentAll);
+
+/* init */
+recent=POOL.slice(0,3).map(x=>x.id);
 buildDots();
 autoT=setInterval(()=>heroNav(1),4500);
 renderGrids();
-renderRecent();
+renderRecentAll();
 </script>
 </body>
 </html>
